@@ -5,6 +5,23 @@ import Tarea as t
 '''
     Atributos Globales
 '''
+'''
+    EJEMPLOS
+    
+    listadoTareas = {
+        "1": Tarea(nombreTarea, descripcion, categoria, prioridad=3, completada=False, subTareas={}),
+        "2": Tarea2(nombreTarea, descripcion, categoria, prioridad=3, completada=False, subTareas=
+                                                                        {                            
+                                                                        Tarea(nombreTarea, descripcion, categoria, prioridad=3, completada=False, subTareas={})
+                                                                        })
+    }
+'''
+'''listadoTareas = {
+    "1" : t.Tarea("nombreTarea", "descripcion", "categoria", 3, False, subTareas=None),
+    "2" : t.Tarea("nombreTarea", "descripcion", "categoria", 3, False, subTareas={
+            "2.1": t.Tarea("nombre", "descripcion", 3, False, True, None)
+    })
+}'''
 listadoTareas = {}
 ultimoID = -1
 
@@ -22,7 +39,7 @@ if __name__ == '__main__':
     while opcion != 0:
         opcion = int(input(MSG))
         if opcion == 1:
-            u.listarTareas(listadoTareas)
+            print(f"{u.listarTareas(listadoTareas=listadoTareas)}")
         elif opcion == 2:
             u.addTarea(u.lastSetID())
         elif opcion == 3:
@@ -36,4 +53,4 @@ if __name__ == '__main__':
         else:
             print("Opcion no valida. ")
     else:
-        u.guardarJSON()
+        u.guardarJSON(listadoTareas)
