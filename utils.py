@@ -1,8 +1,8 @@
 # Importacion de las librerias y clases necesarias
-import json
-import os
 import Tarea as t
 import sklearn as skl
+
+from main import ultimoID
 
 '''
     Prioridad de la tarea:
@@ -12,6 +12,7 @@ import sklearn as skl
 '''
 OPCIONES_PRIORIDAD = [1, 2, 3]
 _fichero = 'Tareas.json'
+ultimoID:int = -1
 
 class Utils:
     _instancia= None
@@ -23,15 +24,14 @@ class Utils:
         return cls._instancia
 
 
-def lastSetID():
+def lastSetID(listadoTareas):
     """ Función que lee cual es el último ID asignado y asigna nuevos IDs """
+    # El último ID que devuelve no se a usado todavia
     global ultimoID # Utilizamos la variable global
     # Si la variable último ID es -1 leerá el archivo JSON y buscará el último ID asignado
     if ultimoID == -1:
-        pass
-    else: # Si la variable es diferente a -1, es decir, ha encontrado el último ID asignado, le sumamos uno y lo devolvemos
-        ultimoID += 1
-    return ultimoID
+        ultimoID = int(next(reversed(listadoTareas))) if listadoTareas else 0
+    return ultimoID +1
 
 def listarTareas(prioridad=0, listadoTareas=None, nivel=0):
     ''' Funcion que lista todas las tareas si no se le introduce una prioridad.
@@ -43,7 +43,7 @@ def listarTareas(prioridad=0, listadoTareas=None, nivel=0):
         listadoTareas = {}
 
     # Si se introduce una prioridad como parametro, mostramos todas las tareas y subtareas que tengan dicha prioridad
-    if prioridad != 0 and prioridad in OPCIONES_PRIORIDAD:
+    if prioridadCorrecta(prioridad):
         for key, value in listadoTareas.items():
             if hasattr(value, 'toString'): # El objeto es de tipo Tarea
                 if value.prioridad == prioridad: # Comprobamos la prioridad
@@ -78,3 +78,31 @@ def listarTareas(prioridad=0, listadoTareas=None, nivel=0):
 
     return cadToReturn
 
+def from_dict(data):
+    ''' Función que crea tareas a partir del diccionario leido del JSON. '''
+    tarea = t.Tarea(
+        data["nombreTarea"],
+        data["descripcion"],
+        data["categoria"],
+        data["prioridad"],
+        data["completada"]
+    )
+
+    subtareas = data.get("subTareas", {})
+    tarea.subTareas = {k: from_dict(v) for k, v in subtareas.items()}
+
+    return tarea
+
+def prioridadCorrecta(prioridad):
+    ''' Función que devuelve si la prioridad introducida es correcta. '''
+    try:
+        value = int(prioridad) in OPCIONES_PRIORIDAD
+    except ValueError:
+        value = False
+    return value
+
+
+def completadaCorrecta(completada:str):
+    if completada.lower() == "no" or completada.lower() == "si":
+        return True
+    return False

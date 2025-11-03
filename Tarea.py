@@ -29,11 +29,8 @@ class Tarea:
         else:
             self.prioridad = prioridad
 
-    '''
-        Método que convierte la tarea en una cadena
-    '''
-
     def to_dict(self):
+        ''' Función que convierte la tarea en una cadena. '''
         sub_tarea = {}
         if self.subTareas: # No es None y contiene datos
             for clave, v in self.subTareas.items():

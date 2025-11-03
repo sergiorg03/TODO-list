@@ -42,11 +42,14 @@ if __name__ == '__main__':
         if opcion == 1:
             print(f"{u.listarTareas(listadoTareas=listadoTareas)}")
         elif opcion == 2:
-            d.addTarea(u.lastSetID())
+            d.addTarea(u.lastSetID(ultimoID), listadoTareas= listadoTareas)
         elif opcion == 3:
             pass
         elif opcion == 4:
-            pass
+            print(f"{u.listarTareas(listadoTareas=listadoTareas)}")
+            id = input("Intrduzca el ID de la tarea que desea eliminar: \n")
+
+            d.eliminarTarea(listadoTareas=listadoTareas)
         elif opcion == 5:
             d.generarReport()
         elif opcion == 0:
