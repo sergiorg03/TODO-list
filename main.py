@@ -1,6 +1,8 @@
 # Importación de las librerias necesarias
-import Utils as u
+import utils as u
+import data_handler as d
 import Tarea as t
+import sklearn as skl
 
 '''
     Atributos Globales
@@ -15,8 +17,7 @@ import Tarea as t
                                                                         Tarea(nombreTarea, descripcion, categoria, prioridad=3, completada=False, subTareas={})
                                                                         })
     }
-'''
-'''listadoTareas = {
+listadoTareas = {
     "1" : t.Tarea("nombreTarea", "descripcion", "categoria", 3, False, subTareas=None),
     "2" : t.Tarea("nombreTarea", "descripcion", "categoria", 3, False, subTareas={
             "2.1": t.Tarea("nombre", "descripcion", 3, False, True, None)
@@ -27,7 +28,7 @@ ultimoID = -1
 
 if __name__ == '__main__':
 
-    listadoTareas = u.openJSON()
+    listadoTareas = d.openJSON()
     MSG = ("Que operacion desea hacer: \n"
            "\t1 --> Listado de todas las tareas. \n"
            "\t2 --> Agregar una nueva tarea. \n"
@@ -41,16 +42,16 @@ if __name__ == '__main__':
         if opcion == 1:
             print(f"{u.listarTareas(listadoTareas=listadoTareas)}")
         elif opcion == 2:
-            u.addTarea(u.lastSetID())
+            d.addTarea(u.lastSetID())
         elif opcion == 3:
             pass
         elif opcion == 4:
             pass
         elif opcion == 5:
-            u.generarReport()
+            d.generarReport()
         elif opcion == 0:
             print("Saliendo del programa TODO list.... ")
         else:
             print("Opcion no valida. ")
     else:
-        u.guardarJSON(listadoTareas)
+        d.guardarJSON(listadoTareas)

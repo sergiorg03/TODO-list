@@ -1,5 +1,5 @@
 # Importamos las librerias y clases necesarias
-import Utils as u
+import utils as u
 
 # Clase Tarea para la creación, edicion y borrado de tareas.
 class Tarea:

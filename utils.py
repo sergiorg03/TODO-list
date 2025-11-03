@@ -2,6 +2,7 @@
 import json
 import os
 import Tarea as t
+import sklearn as skl
 
 '''
     Prioridad de la tarea:
@@ -21,36 +22,9 @@ class Utils:
             cls._instancia = super().__new__(cls)
         return cls._instancia
 
-'''
-    Método que guarda el JSON al final cerrar la aplicación con todas las modificaciones realizadas en el mismo.
-'''
-def guardarJSON(listadoTareas=None):
-    listadoTareasJSON = {k: v.to_dict() for k, v in listadoTareas.items()}
-
-    with open(_fichero, 'w', encoding="utf8") as file:
-        json.dump(listadoTareasJSON, file, ensure_ascii=False, indent=4)
-
-'''
-    Método que abre el JSON al inicio de la aplicación y guarda todos los datos en una lista (listadoTareas) 
-    para poder realizar todas las modificaciones necesarias.
-'''
-def openJSON():
-    listado = None
-    try:
-        if os.path.isfile(_fichero):
-            with open(_fichero, 'r', encoding="utf8") as file:
-                datos = json.load(file)
-
-            listado = {k: t.Tarea(**v) for k, v in datos.items()}
-    except FileNotFoundError:
-        return None
-    return listado if listado is not None else print("El fichero de tareas no existe. ")
-
-'''
-    Método que lee cual es el último ID asignado y asigna nuevos IDs
-'''
 
 def lastSetID():
+    """ Función que lee cual es el último ID asignado y asigna nuevos IDs """
     global ultimoID # Utilizamos la variable global
     # Si la variable último ID es -1 leerá el archivo JSON y buscará el último ID asignado
     if ultimoID == -1:
@@ -59,11 +33,9 @@ def lastSetID():
         ultimoID += 1
     return ultimoID
 
-'''
-    Funcion que lista todas las tareas si no se le introduce una prioridad.
-    Si se le introduce una prioridad definida se muestran las  
-'''
 def listarTareas(prioridad=0, listadoTareas=None, nivel=0):
+    ''' Funcion que lista todas las tareas si no se le introduce una prioridad.
+        Si se le introduce una prioridad definida se muestran las tareas con dicha prioridad. '''
     cadToReturn = ""
     indent = "-- " * nivel
 
@@ -104,19 +76,5 @@ def listarTareas(prioridad=0, listadoTareas=None, nivel=0):
                 if sub:
                     cadToReturn += listarTareas(prioridad, sub, nivel + 1)
 
-
     return cadToReturn
-
-
-'''
-    Método que genera un reporte sobre las tareas pendientes, las realizadas en orden de prioridad.
-'''
-def generarReport():
-    pass
-
-'''
-    Método que permite al usuario añadir una nueva tarea
-'''
-def addTarea(ultimoIDUsado: int):
-    pass
 
