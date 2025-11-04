@@ -106,3 +106,12 @@ def completadaCorrecta(completada:str):
     if completada.lower() == "no" or completada.lower() == "si":
         return True
     return False
+
+
+def isNumber(num):
+    ''' Función que devuelve True si el parametro introducido es un número. False si no lo es. '''
+    try:
+        float(num)
+        return True
+    except ValueError:
+        return False

@@ -47,9 +47,11 @@ if __name__ == '__main__':
             pass
         elif opcion == 4:
             print(f"{u.listarTareas(listadoTareas=listadoTareas)}")
-            id = input("Intrduzca el ID de la tarea que desea eliminar: \n")
-
-            d.eliminarTarea(listadoTareas=listadoTareas)
+            idTarea = input("Intrduzca el ID de la tarea que desea eliminar: \n")
+            while not u.isNumber(idTarea):
+                idTarea = input("Introduce un ID correcto: \n")
+            else:
+                d.eliminarTarea(listadoTareas=listadoTareas, IDTareaEliminar=int(idTarea))
         elif opcion == 5:
             d.generarReport()
         elif opcion == 0:

@@ -30,11 +30,7 @@ def openJSON():
         return None
     return listado if listado is not None else print("El fichero de tareas no existe. ")
 
-def generarReport():
-    """ Función que genera un reporte sobre las tareas pendientes, las realizadas en orden de prioridad. """
-    pass
-
-def addTarea(ultimoIDUsado: int= 0, listadoTareas=None):
+def addTarea(ultimoIDUsado: int= 0, listadoTareas=None): # TODO: Añadir subtareas
     """ Función que permite al usuario añadir una nueva tarea. """
     nombreTarea = input(f"Introduce el nombre de la tarea: \n")
     desc = input("Introduce una descripción de la tarea: \n")
