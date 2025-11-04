@@ -6,7 +6,7 @@ import Tarea as t
 import sklearn as skl
 
 
-def generarReport(listadoTareas=None): # TODO: Terminar método
+def generarReport(listadoTareas=None):  # TODO: Terminar método
     """ Función que genera un reporte sobre las tareas pendientes y las realizadas en orden de prioridad. """
     if listadoTareas is None:
         listadoTareas = {}
@@ -16,11 +16,12 @@ def generarReport(listadoTareas=None): # TODO: Terminar método
 
     for k, v in list(listadoTareas.items()):
         if v.completada:
-            tareasCompletadas[k] = v
+            tareasCompletadas[k] = v.toString()
         else:
-            tareasSinCompletar[k] = v
+            tareasSinCompletar[k] = v.toString()
         if v.subTareas:
-            generarReport(v.subTareas)
+            subtarea = generarReport(v.subTareas)
+            tareasCompletadas.update(subtarea['Tareas completadas'])
+            tareasSinCompletar.update(subtarea['Tareas sin completar'])
 
-    dictFinal = tareasCompletadas|tareasSinCompletar
-    return dictFinal
+    return {"Tareas completadas": tareasCompletadas, "Tareas sin completar": tareasSinCompletar}

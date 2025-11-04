@@ -1,7 +1,7 @@
 # Importación de las librerias necesarias
 import utils as u
 import data_handler as d
-import Tarea as t
+import reports as r
 import sklearn as skl
 
 '''
@@ -53,7 +53,11 @@ if __name__ == '__main__':
             else:
                 d.eliminarTarea(listadoTareas=listadoTareas, IDTareaEliminar=int(idTarea))
         elif opcion == 5:
-            d.generarReport()
+
+            for k, v in r.generarReport(listadoTareas=listadoTareas).items():
+                print(f"\n{k}:\n")
+                for k2, v2 in v.items():
+                    print(f"\tID: {k2} --> {v2}")
         elif opcion == 0:
             print("Saliendo del programa TODO list.... ")
         else:
