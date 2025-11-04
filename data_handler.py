@@ -8,15 +8,22 @@ import sklearn as skl
 _fichero = 'Tareas.json'
 
 def guardarJSON(listadoTareas=None):
-    """ Función que guarda el JSON al final cerrar la aplicación con todas las modificaciones realizadas en el mismo."""
+    """
+        Función que guarda el JSON al final cerrar la aplicación con todas las modificaciones realizadas en el mismo.
+
+        :param listadoTareas --> Listado de tareas a guardar en el fichero JSON.
+    """
     listadoTareasJSON = {k: v.to_dict() for k, v in listadoTareas.items()}
 
     with open(_fichero, 'w', encoding="utf8") as file:
         json.dump(listadoTareasJSON, file, ensure_ascii=False, indent=4)
 
 def openJSON():
-    """ Función que abre el JSON al inicio de la aplicación y guarda todos los datos en una lista (listadoTareas)
-    para poder realizar todas las modificaciones necesarias."""
+    """
+        Función que abre el JSON al inicio de la aplicación y guarda todos los datos en una lista (listadoTareas)
+        para poder realizar todas las modificaciones necesarias.
+
+    """
     listado = None
     try:
         if os.path.isfile(_fichero):
@@ -31,7 +38,12 @@ def openJSON():
     return listado if listado is not None else print("El fichero de tareas no existe. ")
 
 def addTarea(ultimoIDUsado: int= 0, listadoTareas=None): # TODO: Añadir subtareas
-    """ Función que permite al usuario añadir una nueva tarea. """
+    """
+        Función que permite al usuario añadir una nueva tarea.
+
+        :param listadoTareas --> Listado de tareas en la que añadiremos la nueva tarea.
+        :param ultimoIDUsado --> Id de la nueva tarea.
+    """
     nombreTarea = input(f"Introduce el nombre de la tarea: \n")
     desc = input("Introduce una descripción de la tarea: \n")
     cat = input("Introduce una categoria de la tarea: \n")
@@ -48,7 +60,12 @@ def addTarea(ultimoIDUsado: int= 0, listadoTareas=None): # TODO: Añadir subtare
     listadoTareas[ultimoIDUsado] = t1
 
 def eliminarTarea(listadoTareas, IDTareaEliminar:int):
-    ''' Función que elimina una tarea indicada mediante el ID de tarea '''
+    """
+        Función que elimina una tarea indicada mediante el ID de tarea.
+
+        :param listadoTareas --> Listado de tareas
+        :param IDTareaEliminar --> ID de la tarea a eliminar.
+    """
     for clave, valor in list(listadoTareas.items()):
         if clave == IDTareaEliminar:
             listadoTareas.pop(IDTareaEliminar)

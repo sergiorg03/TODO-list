@@ -20,7 +20,8 @@ class Tarea:
         self.completada = completada
         self.subTareas = subTareas if subTareas is not None else {}
 
-    def toString(self):
+
+    def __str__(self):
         return f'Nombre: {self.nombreTarea} \n\tDescripcion: {self.descripcion} \n\tPrioridad: {self.prioridad}\n'
 
     def setPrioridad(self, prioridad=-1):
@@ -30,7 +31,9 @@ class Tarea:
             self.prioridad = prioridad
 
     def to_dict(self):
-        ''' Función que convierte la tarea en una cadena. '''
+        '''
+            Función que convierte la tarea en una cadena para guardarla en un JSON.
+        '''
         sub_tarea = {}
         if self.subTareas: # No es None y contiene datos
             for clave, v in self.subTareas.items():

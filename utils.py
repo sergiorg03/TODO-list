@@ -25,7 +25,15 @@ class Utils:
 
 
 def lastSetID(listadoTareas):
-    """ Función que lee cual es el último ID asignado y asigna nuevos IDs """
+    """
+        Función que lee cual es el último ID asignado y asigna nuevos IDs
+
+        :param
+            listadoTareas --> Listado de tareas en las que busca el ultimo ID
+
+        :returns
+            Integer --> Devuelve el ultimo ID usado + 1 para asignar directamente.
+    """
     # El último ID que devuelve no se a usado todavia
     global ultimoID # Utilizamos la variable global
     # Si la variable último ID es -1 leerá el archivo JSON y buscará el último ID asignado
@@ -34,8 +42,17 @@ def lastSetID(listadoTareas):
     return ultimoID +1
 
 def listarTareas(prioridad=0, listadoTareas=None, nivel=0):
-    ''' Funcion que lista todas las tareas si no se le introduce una prioridad.
-        Si se le introduce una prioridad definida se muestran las tareas con dicha prioridad. '''
+    """
+        Funcion que lista todas las tareas si no se le introduce una prioridad.
+        Si se le introduce una prioridad definida se muestran las tareas con dicha prioridad.
+
+        :param listadoTareas --> Listado de tareas a mostrar
+        :param prioridad --> Prioridad de las tareas a mostrar
+        :param nivel --> Nivel de tabulación para subtareas
+
+        :returns
+            String --> Devuelve una cadena para mostrar directamente
+    """
     cadToReturn = ""
     indent = "-- " * nivel
 
@@ -79,7 +96,15 @@ def listarTareas(prioridad=0, listadoTareas=None, nivel=0):
     return cadToReturn
 
 def from_dict(data):
-    ''' Función que crea tareas a partir del diccionario leido del JSON. '''
+    '''
+        Función que crea tareas a partir del diccionario leido del JSON.
+
+        :param
+            data --> Cadena que contiene los datos leidos del JSON.
+
+        :returns
+            Tarea --> Devuelve una tarea con sus subtareas.
+    '''
     tarea = t.Tarea(
         data["nombreTarea"],
         data["descripcion"],
@@ -94,7 +119,15 @@ def from_dict(data):
     return tarea
 
 def prioridadCorrecta(prioridad):
-    ''' Función que devuelve si la prioridad introducida es correcta. '''
+    '''
+        Función que devuelve si la prioridad introducida es correcta.
+
+        :param
+            prioridad --> Prioridad introducida a comprobar si es correcta.
+
+        :returns
+            Boolean --> True si la prioridad introducida es correcta. False si no.
+    '''
     try:
         value = int(prioridad) in OPCIONES_PRIORIDAD
     except ValueError:
@@ -103,13 +136,29 @@ def prioridadCorrecta(prioridad):
 
 
 def completadaCorrecta(completada:str):
+    '''
+        Función que comprueba si el valor introducido del campo "completada" es correcto.
+
+        :param
+            completada --> Valor introducido a comprobar.
+
+        :return:
+            Boolean --> Devuelve True si el valor introducido es "Si" o "No". False si no.
+    '''
     if completada.lower() == "no" or completada.lower() == "si":
         return True
     return False
 
 
 def isNumber(num):
-    ''' Función que devuelve True si el parametro introducido es un número. False si no lo es. '''
+    '''
+        Función que devuelve True si el parametro introducido es un número. False si no lo es.
+
+        :param
+            num --> Valor introducido a comprobar.
+        :returns
+            Boolean --> Devuelve True si el valor introducido es un número entero o decimal. False si no.
+    '''
     try:
         float(num)
         return True

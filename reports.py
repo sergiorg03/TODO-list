@@ -7,7 +7,15 @@ import sklearn as skl
 
 
 def generarReport(listadoTareas=None):  # TODO: Terminar método
-    """ Función que genera un reporte sobre las tareas pendientes y las realizadas en orden de prioridad. """
+    """
+        Función que genera un reporte sobre las tareas pendientes y las realizadas en orden de prioridad.
+
+        :param
+            listadoTareas --> Listado de tareas de las que haremos el reporte.
+
+        :returns
+            dict --> Devuelve un diccionario con clave tareas completadas y sin completar y valores las propias tareas.
+    """
     if listadoTareas is None:
         listadoTareas = {}
 
