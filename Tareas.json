@@ -5,32 +5,14 @@
         "categoria": "categoria",
         "prioridad": 3,
         "completada": false,
-        "subTareas": {
-          "1.2" : {
-            "nombreTarea": "Diavlo",
-            "descripcion": "descripcion",
-            "categoria": "Kaka",
-            "prioridad": 3,
-            "completada": true,
-            "subTareas": {}
-          }
-        }
+        "subTareas": {}
     },
     "2": {
         "nombreTarea": "nombreTarea",
         "descripcion": "descripcion",
         "categoria": "categoria",
-        "prioridad": 3,
+        "prioridad": 2,
         "completada": false,
-        "subTareas": {
-            "2.1": {
-                "nombreTarea": "nombre",
-                "descripcion": "descripcion",
-                "categoria": "Kaka",
-                "prioridad": 3,
-                "completada": true,
-                "subTareas": {}
-            }
-        }
+        "subTareas": {}
     }
 }

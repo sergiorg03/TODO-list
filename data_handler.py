@@ -3,7 +3,7 @@ import json
 import os
 import Tarea as t
 import utils as u
-import sklearn as skl
+import re as r
 
 _fichero = 'Tareas.json'
 
@@ -11,7 +11,7 @@ def guardarJSON(listadoTareas=None):
     """
         Función que guarda el JSON al final cerrar la aplicación con todas las modificaciones realizadas en el mismo.
 
-        :param listadoTareas --> Listado de tareas a guardar en el fichero JSON.
+        :param listadoTareas: Listado de tareas a guardar en el fichero JSON.
     """
     listadoTareasJSON = {k: v.to_dict() for k, v in listadoTareas.items()}
 
@@ -22,7 +22,6 @@ def openJSON():
     """
         Función que abre el JSON al inicio de la aplicación y guarda todos los datos en una lista (listadoTareas)
         para poder realizar todas las modificaciones necesarias.
-
     """
     listado = None
     try:
@@ -34,15 +33,14 @@ def openJSON():
     except FileNotFoundError:
         with open(_fichero, 'w', encoding="utf8") as file:
             json.dump({}, file, ensure_ascii=False, indent=4)
-        return None
-    return listado if listado is not None else print("El fichero de tareas no existe. ")
+    return listado if listado is not None else {}
 
-def addTarea(ultimoIDUsado: int= 0, listadoTareas=None): # TODO: Añadir subtareas
+def addTarea(ultimoIDUsado: int= 0, listadoTareas=None): # TODO: Añadir subcategorías.
     """
         Función que permite al usuario añadir una nueva tarea.
 
-        :param listadoTareas --> Listado de tareas en la que añadiremos la nueva tarea.
-        :param ultimoIDUsado --> Id de la nueva tarea.
+        :param listadoTareas: Listado de tareas en la que añadiremos la nueva tarea.
+        :param ultimoIDUsado: Id de la nueva tarea.
     """
     nombreTarea = input(f"Introduce el nombre de la tarea: \n")
     desc = input("Introduce una descripción de la tarea: \n")
@@ -59,16 +57,82 @@ def addTarea(ultimoIDUsado: int= 0, listadoTareas=None): # TODO: Añadir subtare
 
     listadoTareas[ultimoIDUsado] = t1
 
-def eliminarTarea(listadoTareas, IDTareaEliminar:int):
+def eliminarTarea(listadoTareas, IDTareaEliminar:float):
     """
         Función que elimina una tarea indicada mediante el ID de tarea.
 
-        :param listadoTareas --> Listado de tareas
-        :param IDTareaEliminar --> ID de la tarea a eliminar.
+        :param listadoTareas: Listado de tareas.
+        :param IDTareaEliminar: ID de la tarea a eliminar.
     """
+    IDTareaEliminar = str(IDTareaEliminar)
     for clave, valor in list(listadoTareas.items()):
         if clave == IDTareaEliminar:
             listadoTareas.pop(IDTareaEliminar)
         else:
             if valor.subTareas:
-                eliminarTarea(valor.subTareas, IDTareaEliminar)
+                eliminarTarea(valor.subTareas, float(IDTareaEliminar))
+
+
+def editarTarea(idTareaEditar:str, listadoTareas=None):
+    """
+        Función que edita la tarea indicada por parametro
+
+        :param listadoTareas: Lista de tareas en las que buscar la tarea indicada para editarla.
+    """
+    if listadoTareas is None:
+        listadoTareas = {}
+
+    if listadoTareas:
+        opcion = -1
+        while opcion != 0:
+            try:
+                opcion = int(input("Que datos desea editar de la tarea: \n\t1 --> El nombre. \n\t2 --> La descripción. \n\t3 --> La categoria. \n\t4 --> La prioridad. \n\t5 --> Está completada. \n\t0 --> Salir. "))
+
+                if opcion == 1: # Nombre
+                    listadoTareas[idTareaEditar].nombreTarea = input("Introduce el nuevo nombre de la tarea: \n")
+                elif opcion == 2: # Descripcion
+                    listadoTareas[idTareaEditar].descripcion = input("Introduce la descripción de la tarea: \n")
+                elif opcion == 3: # Categoria
+                    pass
+                elif opcion == 4: # Prioridad
+                    prio = input("Introduce la nueva prioridad de la tarea: \n")
+                    if prio in u.OPCIONES_PRIORIDAD:
+                        listadoTareas[idTareaEditar].prioridad = prio
+                    else:
+                        print(f"La prioridad no se ha podido modificar ya que el valor {prio} no está en las opciones de prioridad establecidas (1, 2, 3).")
+                elif opcion == 5: # Completada
+                    completa = input("Introduce si se ha completado la tarea: \n\tSi --> Si la tarea se ha completado. \n\tNo --> Si la tarea no se ha completada\n")
+                    while not u.completadaCorrecta(completa):
+                        completa = input("El valor introducido no es correcto, introduzca un valor correcto: \n")
+                    listadoTareas[idTareaEditar].completa = True if completa.lower() == "si" else False
+                elif opcion == 0: # Salir
+                    print("Saliendo de la edición de la tarea. ")
+                else:
+                    print("Opcion no valida. Por favor introduzca una opción correcta. ")
+            except ValueError:
+                print("Opcion no valida. ")
+
+def buscarTarea(listadoTareas, categoria:str= "", prioridad:int= -1): # TODO: Completar método IF = true y finalizar la parte False
+    """
+        Función que realiza una búsqueda por categorías o por palabras clave por todas las tareas y las devuelve en forma de diccionario.
+
+        :param listadoTareas: Lista de tareas en la que realizar la búsqueda.
+        :param categoria: Categoria por la que buscar. Puede no introducirse.
+        :param prioridad: Prioridad por la que buscar en todas las tareas. Puede no introducirse.
+
+        :return:
+            Devuelve un diccionario con las tareas encontradas con la misma categoria o que contienen la palabra clave.
+    """
+    tareas = {}
+    if categoria: # bucamos por categorias
+        for clave, valor in listadoTareas.items():
+
+            if clave.categoria:
+                buscarTarea(valor.categoria, categoria)
+    else: # Buscamos por la prioridad TODO: FINALIZAR MÉTODO PARA MOSTRARLO CORRECTAMENTE
+        for clave, valor in listadoTareas.items():
+            if valor.prioridad == prioridad:
+                tareas[clave] = valor
+    return tareas if tareas else {"Error": "No hay tareas."}
+
+

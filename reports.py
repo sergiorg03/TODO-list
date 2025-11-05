@@ -3,10 +3,9 @@
 import utils as u
 import json
 import Tarea as t
-import sklearn as skl
 
 
-def generarReport(listadoTareas=None):  # TODO: Terminar método
+def generarReport(listadoTareas=None):  # TODO: Completar método para que muestre las tareas por orden de prioridad y de al final un pocentage de tareas realizadas
     """
         Función que genera un reporte sobre las tareas pendientes y las realizadas en orden de prioridad.
 
@@ -24,9 +23,9 @@ def generarReport(listadoTareas=None):  # TODO: Terminar método
 
     for k, v in list(listadoTareas.items()):
         if v.completada:
-            tareasCompletadas[k] = v.toString()
+            tareasCompletadas[k] = v.__str__()
         else:
-            tareasSinCompletar[k] = v.toString()
+            tareasSinCompletar[k] = v.__str__()
         if v.subTareas:
             subtarea = generarReport(v.subTareas)
             tareasCompletadas.update(subtarea['Tareas completadas'])
