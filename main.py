@@ -30,7 +30,7 @@ if __name__ == '__main__':
            "\t2 --> Agregar una nueva tarea. \n"
            "\t3 --> Editar una tarea. \n"
            "\t4 --> Eliminar una tarea. \n"
-           "\t5 --> Generar reporte (Número de tareas pendientes y completadas por prioridad). \n"
+           "\t5 --> Generar reporte (Número de tareas pendientes y completadas). \n"
            "\t6 --> Marcar una tarea como completada. \n"
            "\t7 --> Buscar una tarea por categoria o por prioridad. \n"
            "\t0 --> Salir. \n")
@@ -62,7 +62,7 @@ if __name__ == '__main__':
                         idTarea = input("Introduce un ID correcto: \n")
                     else:
                         d.eliminarTarea(listadoTareas=listadoTareas, IDTareaEliminar=idTarea)
-                case 5:
+                case 5: # Generación de reportes
 
                     totalTareas = 0
                     completadas = 0
@@ -72,52 +72,57 @@ if __name__ == '__main__':
                         for k2, v2 in v.items():
                             print(f"\tID: {k2} --> {v2}")'''
                         if k == "Tareas completadas":
-                            completadas = len(v)
-                        print(f"El número de {k} es: {len(v)}")
-                        totalTareas += len(v)
+                            completadas = v
+                        print(f"El número de {k} es: {v}")
+                        totalTareas += v
 
-                    print(f"\nEl total de tareas es {totalTareas} y llevas un {(completadas/totalTareas)*100}% completado. ")
+                    print(f"\nEl total de tareas es {totalTareas} y llevas un {((completadas/totalTareas)*100):.2f}% completado. \n")
                 case 6: # Marcar tarea como completada
                     print(f"\n{u.listarTareas(listadoTareas=listadoTareas)}\n")
-                    idTareaCompletar = input("Introduce el ID de la tarea a marcar como completada. ")
+                    idTareaCompletar = input("Introduce el ID de la tarea a marcar como completada. \n")
                     while not u.idInLista(listaTareas=listadoTareas, idTarea=idTareaCompletar):
                         idTareaCompletar = input("El ID introducido no existe en la lista, introduce un ID correcto: \n")
                     if not listadoTareas[idTareaCompletar].completada:
                         listadoTareas[idTareaCompletar].completada = True
+                        print("La tarea fue marcada como completada correctamente. \n")
                     else:
-                        print(f"La tarea ya fue completada anteriormente. ")
+                        print(f"La tarea ya fue completada anteriormente. \n")
                 case 7: # Buscar tarea por categoria o prioridad
                     op1 = -1
                     while op1 != 0:
                         try:
                             op1 = int(input(
-                                "Introduzca 1 si desea buscar la tarea por categoria, 2 si desea buscar la tarea por prioridades o 0 si desea salir: "))
+                                "Introduzca 1 si desea buscar la tarea por categoria, 2 si desea buscar la tarea por prioridades o 0 si desea salir: \n"))
 
-                            if op1 == 1: # Busqueda por categoria TODO: Realizar método
-                                cat = input("Introduzca el categoria que desea buscar: ")
-                                print(f"{d.buscarTarea(listadoTareas=listadoTareas, categoria=cat)}")
+                            if op1 == 1: # Busqueda por categoria
+                                cat = input("Introduzca la categoria que desea buscar: \n")
+                                tareas = d.buscarTarea(listadoTareas=listadoTareas, categoria=cat)
+                                for key, value in tareas.items():
+                                    print(f"\tID: {key} --> {value.__str__()}")
                             elif op1 == 2: # Busqueda por prioridad
                                 pri = -1
                                 while not u.prioridadCorrecta(pri):
-                                    try: # TODO: Terminar metodo para que me muestre correctamente las tareas que tengan la prioridad indicada
+                                    try:
                                         pri = int(input("Introduzca la prioridad por la que desea buscar: "))
                                         tareas = d.buscarTarea(listadoTareas=listadoTareas, prioridad=pri)
-                                        print(f"{key,":", value.__str__()}" for key, value in tareas.items())
+                                        for key, value in tareas.items():
+                                            print(f"\tID: {key} --> {value.__str__()}")
+                                            print("\n")
                                     except ValueError:
-                                        print("Opcion no valida. ")
-                            elif op1 == 0: # Saliendo del programa
-                                print("Saliendo del programa")
+                                        print("Opcion no valida. \n")
+                            elif op1 == 0: # Saliendo de la busqueda de tareas
+                                print("Saliendo de la busqueda de tareas... \n")
                             else:
-                                pass
+                                print("Opcion no valida. \n")
                         except ValueError:
-                            print("Opcion no valida. ")
+                            print("Opcion no valida. \n")
 
                 case 0: # Salir del programa
                     print("Saliendo del programa TODO list.... ")
                 case _: # Opcion introducida no valida
-                    print("Opcion no valida. ")
+                    print("Opcion no valida. \n")
 
         except ValueError: # La opción introducida no es un número
-            print("Opcion no valida. ")
+            print("Opcion no valida. \n")
     else:
         d.guardarJSON(listadoTareas)

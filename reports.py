@@ -5,15 +5,15 @@ import json
 import Tarea as t
 
 
-def generarReport(listadoTareas=None):  # TODO: Completar método para que muestre las tareas por orden de prioridad y de al final un pocentage de tareas realizadas
+def generarReport(listadoTareas=None):
     """
         Función que genera un reporte sobre las tareas pendientes y las realizadas en orden de prioridad.
 
-        :param
+        :param:
             listadoTareas --> Listado de tareas de las que haremos el reporte.
 
-        :returns
-            dict --> Devuelve un diccionario con clave tareas completadas y sin completar y valores las propias tareas.
+        :returns:
+            Diccionario --> Devuelve un diccionario con clave tareas completadas y sin completar y valores las propias tareas.
     """
     if listadoTareas is None:
         listadoTareas = {}
@@ -26,9 +26,5 @@ def generarReport(listadoTareas=None):  # TODO: Completar método para que muest
             tareasCompletadas[k] = v.__str__()
         else:
             tareasSinCompletar[k] = v.__str__()
-        if v.subTareas:
-            subtarea = generarReport(v.subTareas)
-            tareasCompletadas.update(subtarea['Tareas completadas'])
-            tareasSinCompletar.update(subtarea['Tareas sin completar'])
 
-    return {"Tareas completadas": tareasCompletadas, "Tareas sin completar": tareasSinCompletar}
+    return {"Tareas completadas": len(tareasCompletadas), "Tareas sin completar": len(tareasSinCompletar)}

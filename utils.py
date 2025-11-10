@@ -40,15 +40,14 @@ def lastSetID(listadoTareas):
 
 def listarTareas(listadoTareas=None, prioridad=0, nivel=0):
     """
-        Funcion que lista todas las tareas si no se le introduce una prioridad.
+        Función que lista todas las tareas si no se le introduce una prioridad.
         Si se le introduce una prioridad definida se muestran las tareas con dicha prioridad.
 
         :param listadoTareas: Listado de tareas a mostrar
         :param prioridad: Prioridad de las tareas a mostrar
-        :param nivel: Nivel de tabulación para subtareas
+        :param nivel: Nivel de tabulación para subcategorias
 
-        :returns
-            String: Devuelve una cadena para mostrar directamente
+        :returns String: Devuelve una cadena para mostrar directamente
     """
     cadToReturn = ""
     indent = "-- " * nivel
@@ -56,14 +55,13 @@ def listarTareas(listadoTareas=None, prioridad=0, nivel=0):
     if listadoTareas is None: # Comprobamos que no se None
         listadoTareas = {}
 
-    # Si se introduce una prioridad como parametro, mostramos todas las tareas y subtareas que tengan dicha prioridad
+    # Si se introduce una prioridad como parametro, mostramos todas las tareas con dicha prioridad
     if prioridadCorrecta(prioridad):
         for key, value in listadoTareas.items():
             if hasattr(value, '__str__'): # El objeto es de tipo Tarea
                 if value.prioridad == prioridad: # Comprobamos la prioridad
                     cadToReturn += f"{indent}ID: {key} --> {value.__str__()}\n" # Lo añadimos para devolverla al final
-                if value.subTareas: #Comprobamos que tenga subtareas
-                    cadToReturn += listarTareas(prioridad=prioridad, listadoTareas=value.subTareas, nivel=nivel + 1)
+
             elif isinstance(value, dict): # El objeto es de tipo diccionario
                 if value.get("prioridad") == prioridad: #comprobamos la prioridad
                     cad = (f'Nombre: {value.get("nombreTarea", "Sin nombre")} \n\t'
@@ -71,24 +69,15 @@ def listarTareas(listadoTareas=None, prioridad=0, nivel=0):
                            f'Prioridad: {value.get("prioridad", 0)}\n')
                     cadToReturn += f"{indent}ID: {key} -> {cad}\n"
 
-                sub = value.get("subTareas", {})
-                if sub:
-                    cadToReturn += listarTareas(prioridad=prioridad, listadoTareas=sub, nivel=nivel + 1)
     else: # mostramos todas las tareas
         for key, value in listadoTareas.items():
             if hasattr(value, '__str__'): # El objeto es de tipo Tarea
                 cadToReturn += f"{indent}ID: {key} --> {value.__str__()}\n"  # Lo añadimos para devolverla al final
-                if value.subTareas: #Comprobamos que tenga subtareas
-                    cadToReturn += listarTareas(listadoTareas=value.subTareas, prioridad=prioridad, nivel=nivel + 1)
             elif isinstance(value, dict): # El objeto es de tipo diccionario
                 cad = (f'Nombre: {value.get("nombreTarea", "Sin nombre")} \n\t'
                        f'Descripcion: {value.get("descripcion", "Sin descripción")} \n\t'
                        f'Prioridad: {value.get("prioridad", 0)}\n')
                 cadToReturn += f"{indent}ID: {key} -> {cad}\n"
-
-                sub = value.get("subTareas", {})
-                if sub:
-                    cadToReturn += listarTareas(prioridad, sub, nivel + 1)
 
     return cadToReturn
 
@@ -96,11 +85,9 @@ def from_dict(data):
     '''
         Función que crea tareas a partir del diccionario leido del JSON.
 
-        :param
-            data: Cadena que contiene los datos leidos del JSON.
+        :param data: Cadena que contiene los datos leidos del JSON.
 
-        :returns
-            Tarea: Devuelve una tarea con sus subtareas.
+        :returns Tarea: Devuelve una tarea con sus subtareas.
     '''
     tarea = t.Tarea(
         data["nombreTarea"],
@@ -110,20 +97,15 @@ def from_dict(data):
         data["completada"]
     )
 
-    subtareas = data.get("subTareas", {})
-    tarea.subTareas = {k: from_dict(v) for k, v in subtareas.items()}
-
     return tarea
 
 def prioridadCorrecta(prioridad):
     '''
         Función que devuelve si la prioridad introducida es correcta.
 
-        :param
-            prioridad: Prioridad introducida a comprobar si es correcta.
+        :param prioridad: Prioridad introducida a comprobar si es correcta.
 
-        :returns
-            Boolean: True si la prioridad introducida es correcta. False si no.
+        :returns Boolean: True si la prioridad introducida es correcta. False si no.
     '''
     try:
         value = int(prioridad) in OPCIONES_PRIORIDAD
@@ -136,8 +118,7 @@ def completadaCorrecta(completada:str):
     '''
         Función que comprueba si el valor introducido del campo "completada" es correcto.
 
-        :param
-            completada: Valor introducido a comprobar.
+        :param completada: Valor introducido a comprobar.
 
         :return:
             Boolean: Devuelve True si el valor introducido es "Si" o "No". False si no.
@@ -151,10 +132,8 @@ def isNumber(num):
     '''
         Función que devuelve True si el parametro introducido es un número. False si no lo es.
 
-        :param
-            num: Valor introducido a comprobar.
-        :returns
-            Boolean: Devuelve True si el valor introducido es un número entero o decimal. False si no.
+        :param num: Valor introducido a comprobar.
+        :returns Boolean: Devuelve True si el valor introducido es un número entero o decimal. False si no.
     '''
     try:
         float(num)
@@ -170,10 +149,21 @@ def idInLista(listaTareas, idTarea):
         :param listaTareas: Lista de tareas en la que comprobar el ID.
         :param idTarea: ID a comprobar.
 
-        :return:
-            Boolean: True si el ID introducido existe en la lista. False si no.
+        :return Boolean: True si el ID introducido existe en la lista. False si no.
     """
     for k, v in listaTareas.items():
         if k == idTarea:
             return True
     return False
+
+def getCategorias(tarea:t.Tarea):
+    '''
+        Función que devuelve las categorías de una tarea.
+
+        :return String: Cadena con las categorías disponibles.
+    '''
+    cad ="\n\t\t"
+    for id, categoria in tarea.categoria.items():
+        cad += f'ID: {id} --> : {categoria}\n\t\t'
+
+    return cad

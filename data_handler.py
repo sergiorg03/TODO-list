@@ -61,7 +61,7 @@ def addSubCategorias():
     cat.update((clave, valor) for clave, valor in enumerate(aux, start=1))
     return cat
 
-def addTarea(ultimoIDUsado: int= 0, listadoTareas=None): # TODO: Añadir subcategorías.
+def addTarea(ultimoIDUsado: int= 0, listadoTareas=None):
     """
         Función que permite al usuario añadir una nueva tarea.
 
@@ -83,20 +83,17 @@ def addTarea(ultimoIDUsado: int= 0, listadoTareas=None): # TODO: Añadir subcate
 
     listadoTareas[ultimoIDUsado] = t1
 
-def eliminarTarea(listadoTareas, IDTareaEliminar:float):
+def eliminarTarea(listadoTareas, IDTareaEliminar:str):
     """
         Función que elimina una tarea indicada mediante el ID de tarea.
 
         :param listadoTareas: Listado de tareas.
         :param IDTareaEliminar: ID de la tarea a eliminar.
     """
-    IDTareaEliminar = str(IDTareaEliminar)
     for clave, valor in list(listadoTareas.items()):
-        if clave == IDTareaEliminar:
+        if str(clave) == str(IDTareaEliminar):
             listadoTareas.pop(IDTareaEliminar)
-        '''else:
-            if valor.subTareas:
-                eliminarTarea(valor.subTareas, float(IDTareaEliminar))'''
+    print("Tarea eliminada correctamente... \n")
 
 
 def editarTarea(idTareaEditar:str, listadoTareas=None): # TODO: Editar las categorias y subcategorias
@@ -122,11 +119,14 @@ def editarTarea(idTareaEditar:str, listadoTareas=None): # TODO: Editar las categ
                 elif opcion == 3: # Categoria
                     pass
                 elif opcion == 4: # Prioridad
-                    prio = input("Introduce la nueva prioridad de la tarea: \n")
-                    if prio in u.OPCIONES_PRIORIDAD:
-                        listadoTareas[idTareaEditar].prioridad = prio
-                    else:
-                        print(f"La prioridad no se ha podido modificar ya que el valor {prio} no está en las opciones de prioridad establecidas (1, 2, 3).")
+                    try:
+                        prio = int(input("Introduce la nueva prioridad de la tarea: \n"))
+                        if prio in u.OPCIONES_PRIORIDAD:
+                            listadoTareas[idTareaEditar].prioridad = prio
+                        else:
+                            print(f"La prioridad no se ha podido modificar ya que el valor {prio} no está en las opciones de prioridad establecidas (1, 2, 3).")
+                    except ValueError:
+                        print("Opcion no valida. ")
                 elif opcion == 5: # Completada
                     completa = input("Introduce si se ha completado la tarea: \n\tSi --> Si la tarea se ha completado. \n\tNo --> Si la tarea no se ha completada\n")
                     while not u.completadaCorrecta(completa):
@@ -139,7 +139,7 @@ def editarTarea(idTareaEditar:str, listadoTareas=None): # TODO: Editar las categ
             except ValueError:
                 print("Opcion no valida. ")
 
-def buscarTarea(listadoTareas, categoria:str= "", prioridad:int= -1): # TODO: Completar método IF = true y finalizar la parte False
+def buscarTarea(listadoTareas, categoria:str= "", prioridad:int= -1):
     """
         Función que realiza una búsqueda por categorías o por palabras clave por todas las tareas y las devuelve en forma de diccionario.
 
@@ -151,13 +151,14 @@ def buscarTarea(listadoTareas, categoria:str= "", prioridad:int= -1): # TODO: Co
             Devuelve un diccionario con las tareas encontradas con la misma categoria o que contienen la palabra clave.
     """
     tareas = {}
-    if categoria: # bucamos por categorias
+    if categoria: # Bucamos por categorias
         for clave, valor in listadoTareas.items():
-
-            if clave.categoria:
-                buscarTarea(valor.categoria, categoria)
-    else: # Buscamos por la prioridad TODO: FINALIZAR MÉTODO PARA MOSTRARLO CORRECTAMENTE
-        for clave, valor in listadoTareas.items():
+            if valor.categoria:
+                for key, val in valor.categoria.items():
+                    if val == categoria:
+                        tareas[clave] = valor
+    else: # Buscamos por la prioridad
+        for clave, valor in list(listadoTareas.items()):
             if valor.prioridad == prioridad:
                 tareas[clave] = valor
     return tareas if tareas else {"Error": "No hay tareas."}

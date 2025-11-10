@@ -20,7 +20,8 @@ class Tarea:
 
 
     def __str__(self):
-        return f'Nombre: {self.nombreTarea} \n\tDescripcion: {self.descripcion} \n\tPrioridad: {self.prioridad}\n'
+        categorias = u.getCategorias(self) if self.categoria else "No tiene subcategorias. "
+        return f'Nombre: {self.nombreTarea} \n\tDescripcion: {self.descripcion} \n\tPrioridad: {self.prioridad} \n\tCompletada: {"Si" if self.completada else "No"} \n\tCategorias: {categorias} '
 
     def setPrioridad(self, prioridad=-1):
         if prioridad not in u.OPCIONES_PRIORIDAD:
