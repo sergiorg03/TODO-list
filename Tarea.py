@@ -7,18 +7,16 @@ class Tarea:
     # Atributos de la clase
     nombreTarea= str
     descripcion= str
-    categoria= str
+    categoria= {}
     prioridad= int
     completada= bool
-    subTareas= {}
 
-    def __init__(self, nombreTarea, descripcion, categoria, prioridad=3, completada=False, subTareas=None):
+    def __init__(self, nombreTarea, descripcion, categoria, prioridad=3, completada=False):
         self.nombreTarea = nombreTarea
         self.descripcion = descripcion
-        self.categoria = categoria
+        self.categoria = categoria if categoria is not None else {}
         self.prioridad = prioridad
         self.completada = completada
-        self.subTareas = subTareas if subTareas is not None else {}
 
 
     def __str__(self):
@@ -34,19 +32,18 @@ class Tarea:
         '''
             Función que convierte la tarea en una cadena para guardarla en un JSON.
         '''
-        sub_tarea = {}
-        if self.subTareas: # No es None y contiene datos
-            for clave, v in self.subTareas.items():
+        sub_cat = {}
+        if self.categoria: # No es None y contiene datos
+            for clave, v in self.categoria.items():
                 if isinstance(v, Tarea):  # Comprobamos que el valor obtenido sea una instancia de la clase Tarea
-                    sub_tarea[clave] = v.to_dict()
+                    sub_cat[clave] = v.to_dict()
                 else:  # si ya es un diccionario, lo dejamos igual
-                    sub_tarea[clave] = v
+                    sub_cat[clave] = v
 
         return {
             "nombreTarea": self.nombreTarea,
             "descripcion": self.descripcion,
-            "categoria": self.categoria,
+            "categoria": sub_cat,
             "prioridad": self.prioridad,
-            "completada": self.completada,
-            "subTareas": sub_tarea
+            "completada": self.completada
         }

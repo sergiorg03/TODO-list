@@ -12,12 +12,12 @@ import reports as r
     EJEMPLOS
     
     listadoTareas = {
-        "1": Tarea(nombreTarea, descripcion, categoria, prioridad=3, completada=False, subTareas={}),
-        "2": Tarea2(nombreTarea, descripcion, categoria, prioridad=3, completada=False, subTareas={})
+        "1": Tarea(nombreTarea, descripcion, categoria={}, prioridad=3, completada=False),
+        "2": Tarea2(nombreTarea, descripcion, categoria={}, prioridad=3, completada=False)
     }
 listadoTareas = {
-    "1" : t.Tarea("nombreTarea", "descripcion", "categoria", 3, False, subTareas=None),
-    "2" : t.Tarea("nombreTarea", "descripcion", "categoria", 3, False, subTareas={})
+    "1" : t.Tarea("nombreTarea", "descripcion", {"1":"categoria"}, 3, False),
+    "2" : t.Tarea("nombreTarea", "descripcion", {"1":"categoria", "2":"subcategoria"}, 3, False)
 }'''
 listadoTareas = {}
 ultimoID = -1

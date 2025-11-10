@@ -35,6 +35,32 @@ def openJSON():
             json.dump({}, file, ensure_ascii=False, indent=4)
     return listado if listado is not None else {}
 
+
+def addSubCategorias():
+    '''
+        Función que devuelve un diccionario de las subcategorias de la tarea.
+        :return: Diccionario con los valores de las subcategorias de la tarea.
+    '''
+    cat = {}
+    cat1 = input("Introduce una categoria de la tarea: \n")
+    cat[0] = cat1
+    aux = []
+    op2 = -1
+    while op2 != 0:
+        try:
+            op2 = int(input(
+                "¿Desea añadir una subcategoria más? \n\t1 --> Desea añadir una subcategoria más. \n\t0 --> No desea añadir más subcategorias. "))
+            if op2 == 1:
+                subcat = input("Introduce la subcategoria de la tarea: ")
+                aux.append(subcat)
+            elif op2 == 0:
+                print("Saliendo... ")
+        except ValueError:
+            print("Valor no valido. ")
+
+    cat.update((clave, valor) for clave, valor in enumerate(aux, start=1))
+    return cat
+
 def addTarea(ultimoIDUsado: int= 0, listadoTareas=None): # TODO: Añadir subcategorías.
     """
         Función que permite al usuario añadir una nueva tarea.
@@ -44,7 +70,7 @@ def addTarea(ultimoIDUsado: int= 0, listadoTareas=None): # TODO: Añadir subcate
     """
     nombreTarea = input(f"Introduce el nombre de la tarea: \n")
     desc = input("Introduce una descripción de la tarea: \n")
-    cat = input("Introduce una categoria de la tarea: \n")
+    cat = addSubCategorias()
     prioridad = input(
         "Introduce la prioridad de la tarea (Valores permitidos: 1, 2, 3 siendo el 1 la tarea con más prioridad y la 3 la que menos): \n")
     while not u.prioridadCorrecta(prioridad):
@@ -53,7 +79,7 @@ def addTarea(ultimoIDUsado: int= 0, listadoTareas=None): # TODO: Añadir subcate
     while not u.completadaCorrecta(completada):
         completada = input("El valor introducido es incorrecto, introduzca un valor correcto: \n\tSi --> La tarea está completada \n\tNo --> La tarea no está completada\n")
 
-    t1 = t.Tarea(nombreTarea=nombreTarea, descripcion=desc, categoria=cat, prioridad=prioridad, completada= True if completada.lower() == "si" else False, subTareas={})
+    t1 = t.Tarea(nombreTarea=nombreTarea, descripcion=desc, categoria=cat, prioridad=prioridad, completada= True if completada.lower() == "si" else False)
 
     listadoTareas[ultimoIDUsado] = t1
 
@@ -68,15 +94,16 @@ def eliminarTarea(listadoTareas, IDTareaEliminar:float):
     for clave, valor in list(listadoTareas.items()):
         if clave == IDTareaEliminar:
             listadoTareas.pop(IDTareaEliminar)
-        else:
+        '''else:
             if valor.subTareas:
-                eliminarTarea(valor.subTareas, float(IDTareaEliminar))
+                eliminarTarea(valor.subTareas, float(IDTareaEliminar))'''
 
 
-def editarTarea(idTareaEditar:str, listadoTareas=None):
+def editarTarea(idTareaEditar:str, listadoTareas=None): # TODO: Editar las categorias y subcategorias
     """
         Función que edita la tarea indicada por parametro
 
+        :param idTareaEditar: Id de la tarea a editar
         :param listadoTareas: Lista de tareas en las que buscar la tarea indicada para editarla.
     """
     if listadoTareas is None:
