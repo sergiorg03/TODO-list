@@ -90,13 +90,37 @@ def eliminarTarea(listadoTareas, IDTareaEliminar:str):
         :param listadoTareas: Listado de tareas.
         :param IDTareaEliminar: ID de la tarea a eliminar.
     """
-    for clave, valor in list(listadoTareas.items()):
+    for clave, tareas in list(listadoTareas.items()):
         if str(clave) == str(IDTareaEliminar):
-            listadoTareas.pop(IDTareaEliminar)
+            listadoTareas.pop(clave)
     print("Tarea eliminada correctamente... \n")
 
+def editCategorias(categorias:dict):
+    for clave, valorCategoria in list(categorias.items()):
+        print(f"ID: {clave} --> {valorCategoria}")
 
-def editarTarea(idTareaEditar:str, listadoTareas=None): # TODO: Editar las categorias y subcategorias
+    op = -2
+    while op != -1:
+        try:
+            op = int(input('Introduzca el ID de la categoria a editar o -1 para salir: \n'))
+
+            if str(op) in categorias:
+                cat = input("Introduce el nuevo valor de la categoria: \n")
+                categorias[op] = cat
+                print("Categoria editada correctamente. ")
+            elif op == -1:
+                print("Saliendo...")
+                break
+            else: 
+                print("El ID introducido no es correcto. ")
+        except ValueError:
+            print("Valor incorrecto. ")
+    
+    return categorias
+        
+
+
+def editarTarea(idTareaEditar:str, listadoTareas):
     """
         Función que edita la tarea indicada por parametro
 
@@ -117,7 +141,7 @@ def editarTarea(idTareaEditar:str, listadoTareas=None): # TODO: Editar las categ
                 elif opcion == 2: # Descripcion
                     listadoTareas[idTareaEditar].descripcion = input("Introduce la descripción de la tarea: \n")
                 elif opcion == 3: # Categoria
-                    pass
+                    listadoTareas[idTareaEditar].categoria = editCategorias(listadoTareas[idTareaEditar].categoria)
                 elif opcion == 4: # Prioridad
                     try:
                         prio = int(input("Introduce la nueva prioridad de la tarea: \n"))

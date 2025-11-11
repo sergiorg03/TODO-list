@@ -41,42 +41,50 @@ if __name__ == '__main__':
             match opcion:
                 case 1: # Listamos las tareas
                     print(f"{u.listarTareas(listadoTareas=listadoTareas)}")
-                case 2: # Añadimos una nueva tarea
+                case 2: # Añadimos una nueva tarea # TODO: Arreglar el ID al añadir una nueva tarea
                     ultimoID = u.lastSetID(listadoTareas=listadoTareas)
                     d.addTarea(ultimoIDUsado=ultimoID, listadoTareas=listadoTareas)
                     print("Tarea creada correctamente. ")
-                case 3: # Editamos una tarea indicada
+                case 3: # Editamos una tarea indicada # TODO: Arreglar, editar tareas añadidas recientemente
                     print("-"*40)
                     print(f"{u.listarTareas(listadoTareas=listadoTareas)}")
                     print("-"*40)
-                    idTarea = input("Introduzca el ID de la tarea a editar: ").strip()
+                    idTarea = input("Introduzca el ID de la tarea a editar: ")
 
                     while not u.idInLista(listaTareas=listadoTareas, idTarea=idTarea):
                         idTarea = input("El id introducido no existe en la lista, introduce un ID correcto: \n")
 
-                    d.editarTarea(listadoTareas= listadoTareas, idTareaEditar= idTarea)
+                    try:
+                        d.editarTarea(listadoTareas= listadoTareas, idTareaEditar= idTarea)
+                    except ValueError:
+                        print("Ocurrio un problema al editar la tarea. ")
                 case 4: # Eliminamos una tarea
                     print(f"{u.listarTareas(listadoTareas=listadoTareas)}")
                     idTarea = input("Intrduzca el ID de la tarea que desea eliminar: \n")
-                    while not u.isNumber(idTarea):
+                    while not u.idInLista(listaTareas=listadoTareas, idTarea=idTarea):
                         idTarea = input("Introduce un ID correcto: \n")
                     else:
-                        d.eliminarTarea(listadoTareas=listadoTareas, IDTareaEliminar=idTarea)
+                        try:
+                            d.eliminarTarea(listadoTareas=listadoTareas, IDTareaEliminar=idTarea)
+                        except ValueError:
+                            print("Ocurrio un problema al eliminar la tarea. ")
                 case 5: # Generación de reportes
 
-                    totalTareas = 0
+                    totalTareas = len(listadoTareas)
+                    completadas = r.getTareasCompletadas(listadoTareas=listadoTareas, completado=True)
+                    '''totalTareas = 0
                     completadas = 0
-                    print()
+                    print("")
                     for k, v in r.generarReport(listadoTareas=listadoTareas).items():
-                        '''print(f"\n{k}:\n")
+                        QUITAR ESPACIO COMILLAS' ''print(f"\n{k}:\n") 
                         for k2, v2 in v.items():
-                            print(f"\tID: {k2} --> {v2}")'''
+                            print(f"\tID: {k2} --> {v2}")' '' QUITAR ESPACIO COMILLAS
                         if k == "Tareas completadas":
                             completadas = v
                         print(f"El número de {k} es: {v}")
-                        totalTareas += v
+                        totalTareas += v'''
 
-                    print(f"\nEl total de tareas es {totalTareas} y llevas un {((completadas/totalTareas)*100):.2f}% completado. \n")
+                    print(f"\nEl número de tareas completadas es: {completadas}, \nEl número de tareas no completadas es: {totalTareas-completadas} \n\nEl total de tareas es {totalTareas} y llevas un {((completadas/totalTareas)*100):.2f}% completado. \n")
                 case 6: # Marcar tarea como completada
                     print(f"\n{u.listarTareas(listadoTareas=listadoTareas)}\n")
                     idTareaCompletar = input("Introduce el ID de la tarea a marcar como completada. \n")

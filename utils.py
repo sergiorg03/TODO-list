@@ -21,12 +21,11 @@ class Utils:
         return cls._instancia
 
 
-def lastSetID(listadoTareas):
+def lastSetID(listadoTareas): # TODO: Arreglar método para añadir ultima tareas.
     """
         Función que lee cuál es el último ID asignado y asigna nuevos IDs.
 
-        :param
-            listadoTareas: Listado de tareas en las que busca el último ID
+        :param listadoTareas: Listado de tareas en las que busca el último ID
 
         :returns
             Integer: Devuelve el ultimo ID usado + 1 para asignar directamente.
@@ -36,7 +35,7 @@ def lastSetID(listadoTareas):
     # Si la variable último ID es -1 leerá el archivo JSON y buscará el último ID asignado
     if ultimoID == -1:
         ultimoID = next(reversed(listadoTareas)) if listadoTareas else 0
-    return int(ultimoID )+1
+    return str(int(ultimoID )+1)
 
 def listarTareas(listadoTareas=None, prioridad=0, nivel=0):
     """
@@ -152,7 +151,7 @@ def idInLista(listaTareas, idTarea):
         :return Boolean: True si el ID introducido existe en la lista. False si no.
     """
     for k, v in listaTareas.items():
-        if k == idTarea:
+        if str(k) == str(idTarea):
             return True
     return False
 

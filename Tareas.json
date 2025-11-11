@@ -104,13 +104,18 @@
         "descripcion": "Stylish and spacious case for makeup and beauty products.",
         "categoria": {},
         "prioridad": 2,
-        "completada": false
+        "completada": true
     },
-    "14": {
-        "nombreTarea": "Prodder",
-        "descripcion": "Non-stick surface for easy cooking and cleaning.",
-        "categoria": {},
-        "prioridad": 1,
+    "15": {
+        "nombreTarea": "MEssi",
+        "descripcion": "npawrWE",
+        "categoria": {
+            "0": "Delantero",
+            "1": "kakaka",
+            "2": "Pedro el mapache",
+            "3": "Messi"
+        },
+        "prioridad": 3,
         "completada": true
     }
 }

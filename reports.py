@@ -28,3 +28,26 @@ def generarReport(listadoTareas=None):
             tareasSinCompletar[k] = v.__str__()
 
     return {"Tareas completadas": len(tareasCompletadas), "Tareas sin completar": len(tareasSinCompletar)}
+
+def getTareasCompletadas(listadoTareas, completado:bool, item=1):
+    '''
+
+        Función recursiva que devuelve las tareas completadas de un listado de tareas.
+
+
+        :param listadoTareas: Listado de tareas del que obtener las tareas completadas.
+        :param completado: Booleano que indica si se buscan tareas completadas (True) o no completadas (False).
+        :param item: Índice actual de la tarea a comprobar.
+
+
+        :return Integer: Número de tareas completadas.
+    '''
+    cont = 0    
+    try:
+        
+        cont = 1 if listadoTareas[str(item)].completada == completado else 0
+        
+    except KeyError:
+        return cont
+    else:
+        return cont + getTareasCompletadas(listadoTareas,completado, item + 1)
