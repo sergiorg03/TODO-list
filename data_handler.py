@@ -79,7 +79,7 @@ def addTarea(ultimoIDUsado: int= 0, listadoTareas=None):
     while not u.completadaCorrecta(completada):
         completada = input("El valor introducido es incorrecto, introduzca un valor correcto: \n\tSi --> La tarea está completada \n\tNo --> La tarea no está completada\n")
 
-    t1 = t.Tarea(nombreTarea=nombreTarea, descripcion=desc, categoria=cat, prioridad=prioridad, completada= True if completada.lower() == "si" else False)
+    t1 = t.Tarea(nombreTarea=nombreTarea, descripcion=desc, categoria=cat, prioridad=int(prioridad), completada= True if completada.lower() == "si" else False)
 
     listadoTareas[ultimoIDUsado] = t1
 
@@ -130,7 +130,7 @@ def editarTarea(idTareaEditar:str, listadoTareas):
     if listadoTareas is None:
         listadoTareas = {}
 
-    if listadoTareas:
+    if listadoTareas and u.idInLista(listaTareas=listadoTareas, idTarea=idTareaEditar):
         opcion = -1
         while opcion != 0:
             try:
@@ -163,6 +163,9 @@ def editarTarea(idTareaEditar:str, listadoTareas):
             except ValueError:
                 print("Opcion no valida. ")
 
+    else: 
+        print("La lista de tareas está vacía o el ID introducido no existe en la lista. ")
+
 def buscarTarea(listadoTareas, categoria:str= "", prioridad:int= -1):
     """
         Función que realiza una búsqueda por categorías o por palabras clave por todas las tareas y las devuelve en forma de diccionario.
@@ -176,15 +179,15 @@ def buscarTarea(listadoTareas, categoria:str= "", prioridad:int= -1):
     """
     tareas = {}
     if categoria: # Bucamos por categorias
-        for clave, valor in listadoTareas.items():
-            if valor.categoria:
-                for key, val in valor.categoria.items():
-                    if val == categoria:
-                        tareas[clave] = valor
+        for clave, valor in listadoTareas.items(): # Recorremos la lista
+            if valor.categoria: # Comprobamos que tenga valores el diccionario
+                for key, val in valor.categoria.items(): # Recorremos el diccionario
+                    if val.upper() == categoria.upper(): # Comprobamos que la categoria corresponda con el valor a buscar
+                        tareas[clave] = valor # Lo guardamos en un diccionario para devolverlo
     else: # Buscamos por la prioridad
-        for clave, valor in list(listadoTareas.items()):
-            if valor.prioridad == prioridad:
-                tareas[clave] = valor
+        for clave, valor in list(listadoTareas.items()): # Recorremos la lista de tareas
+            if str(valor.prioridad) == str(prioridad): # Comprobamos que la prioridad sea la misma por la que buscamos
+                tareas[clave] = valor # Añadimos la tarea a la lista para devolver.
     return tareas if tareas else {"Error": "No hay tareas."}
 
 

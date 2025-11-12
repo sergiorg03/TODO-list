@@ -41,11 +41,11 @@ if __name__ == '__main__':
             match opcion:
                 case 1: # Listamos las tareas
                     print(f"{u.listarTareas(listadoTareas=listadoTareas)}")
-                case 2: # Añadimos una nueva tarea # TODO: Arreglar el ID al añadir una nueva tarea
+                case 2: # Añadimos una nueva tarea 
                     ultimoID = u.lastSetID(listadoTareas=listadoTareas)
                     d.addTarea(ultimoIDUsado=ultimoID, listadoTareas=listadoTareas)
                     print("Tarea creada correctamente. ")
-                case 3: # Editamos una tarea indicada # TODO: Arreglar, editar tareas añadidas recientemente
+                case 3: # Editamos una tarea indicada
                     print("-"*40)
                     print(f"{u.listarTareas(listadoTareas=listadoTareas)}")
                     print("-"*40)
@@ -112,10 +112,13 @@ if __name__ == '__main__':
                                 while not u.prioridadCorrecta(pri):
                                     try:
                                         pri = int(input("Introduzca la prioridad por la que desea buscar: "))
-                                        tareas = d.buscarTarea(listadoTareas=listadoTareas, prioridad=pri)
-                                        for key, value in tareas.items():
-                                            print(f"\tID: {key} --> {value.__str__()}")
-                                            print("\n")
+                                        if u.prioridadCorrecta(pri):
+                                            tareas = d.buscarTarea(listadoTareas=listadoTareas, prioridad=pri)
+                                            for key, value in tareas.items():
+                                                print(f"\tID: {key} --> {value.__str__()}")
+                                                print("\n")
+                                        else:
+                                            print("La prioridad introducida no es correcta. \n")
                                     except ValueError:
                                         print("Opcion no valida. \n")
                             elif op1 == 0: # Saliendo de la busqueda de tareas

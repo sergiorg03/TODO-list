@@ -9,7 +9,6 @@ import Tarea as t
 '''
 OPCIONES_PRIORIDAD = [1, 2, 3]
 _fichero = 'Tareas.json'
-ultimoID:int = -1
 
 class Utils:
     _instancia= None
@@ -21,21 +20,16 @@ class Utils:
         return cls._instancia
 
 
-def lastSetID(listadoTareas): # TODO: Arreglar método para añadir ultima tareas.
+def lastSetID(listadoTareas): 
     """
         Función que lee cuál es el último ID asignado y asigna nuevos IDs.
 
         :param listadoTareas: Listado de tareas en las que busca el último ID
 
-        :returns
-            Integer: Devuelve el ultimo ID usado + 1 para asignar directamente.
+        :returns Integer: Devuelve el ultimo ID usado + 1 para asignar directamente.
     """
-    # El último ID que devuelve no se ha usado todavia
-    global ultimoID # Utilizamos la variable global
-    # Si la variable último ID es -1 leerá el archivo JSON y buscará el último ID asignado
-    if ultimoID == -1:
-        ultimoID = next(reversed(listadoTareas)) if listadoTareas else 0
-    return str(int(ultimoID )+1)
+    id = list(listadoTareas)[-1] if listadoTareas else "0"
+    return str((int(id) + 1)) if isNumber(id) and not None else 1
 
 def listarTareas(listadoTareas=None, prioridad=0, nivel=0):
     """
