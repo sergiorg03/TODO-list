@@ -49,9 +49,9 @@ def addSubCategorias():
     while op2 != 0:
         try:
             op2 = int(input(
-                "¿Desea añadir una subcategoria más? \n\t1 --> Desea añadir una subcategoria más. \n\t0 --> No desea añadir más subcategorias. "))
+                "¿Desea añadir una subcategoria más? \n\t1 --> Desea añadir una subcategoria más. \n\t0 --> No desea añadir más subcategorias. ").strip())
             if op2 == 1:
-                subcat = input("Introduce la subcategoria de la tarea: ")
+                subcat = input("Introduce la subcategoria de la tarea: ").strip()
                 aux.append(subcat)
             elif op2 == 0:
                 print("Saliendo... ")
@@ -68,16 +68,16 @@ def addTarea(ultimoIDUsado: int= 0, listadoTareas=None):
         :param listadoTareas: Listado de tareas en la que añadiremos la nueva tarea.
         :param ultimoIDUsado: Id de la nueva tarea.
     """
-    nombreTarea = input(f"Introduce el nombre de la tarea: \n")
-    desc = input("Introduce una descripción de la tarea: \n")
+    nombreTarea = input(f"Introduce el nombre de la tarea: \n").strip()
+    desc = input("Introduce una descripción de la tarea: \n").strip()
     cat = addSubCategorias()
     prioridad = input(
-        "Introduce la prioridad de la tarea (Valores permitidos: 1, 2, 3 siendo el 1 la tarea con más prioridad y la 3 la que menos): \n")
+        "Introduce la prioridad de la tarea (Valores permitidos: 1, 2, 3 siendo el 1 la tarea con más prioridad y la 3 la que menos): \n").strip()
     while not u.prioridadCorrecta(prioridad):
-        prioridad = input("El valor de prioridad introducido es incorrecto, introduce un valor de prioridad entre los valores 1 y 3: \n")
-    completada = input("Introduce si la tarea está completada o no: \n\tSi --> La tarea está completada \n\tNo --> La tarea no está completada\n")
+        prioridad = input("El valor de prioridad introducido es incorrecto, introduce un valor de prioridad entre los valores 1 y 3: \n").strip()
+    completada = input("Introduce si la tarea está completada o no: \n\tSi --> La tarea está completada \n\tNo --> La tarea no está completada\n").strip()
     while not u.completadaCorrecta(completada):
-        completada = input("El valor introducido es incorrecto, introduzca un valor correcto: \n\tSi --> La tarea está completada \n\tNo --> La tarea no está completada\n")
+        completada = input("El valor introducido es incorrecto, introduzca un valor correcto: \n\tSi --> La tarea está completada \n\tNo --> La tarea no está completada\n").strip()
 
     t1 = t.Tarea(nombreTarea=nombreTarea, descripcion=desc, categoria=cat, prioridad=int(prioridad), completada= True if completada.lower() == "si" else False)
 
@@ -102,10 +102,10 @@ def editCategorias(categorias:dict):
     op = -2
     while op != -1:
         try:
-            op = int(input('Introduzca el ID de la categoria a editar o -1 para salir: \n'))
+            op = int(input('Introduzca el ID de la categoria a editar o -1 para salir: \n').strip())
 
             if str(op) in categorias:
-                cat = input("Introduce el nuevo valor de la categoria: \n")
+                cat = input("Introduce el nuevo valor de la categoria: \n").strip()
                 categorias[op] = cat
                 print("Categoria editada correctamente. ")
             elif op == -1:
@@ -134,17 +134,17 @@ def editarTarea(idTareaEditar:str, listadoTareas):
         opcion = -1
         while opcion != 0:
             try:
-                opcion = int(input("Que datos desea editar de la tarea: \n\t1 --> El nombre. \n\t2 --> La descripción. \n\t3 --> La categoria. \n\t4 --> La prioridad. \n\t5 --> Está completada. \n\t0 --> Salir. "))
+                opcion = int(input("Que datos desea editar de la tarea: \n\t1 --> El nombre. \n\t2 --> La descripción. \n\t3 --> La categoria. \n\t4 --> La prioridad. \n\t5 --> Está completada. \n\t0 --> Salir. ").strip())
 
                 if opcion == 1: # Nombre
-                    listadoTareas[idTareaEditar].nombreTarea = input("Introduce el nuevo nombre de la tarea: \n")
+                    listadoTareas[idTareaEditar].nombreTarea = input("Introduce el nuevo nombre de la tarea: \n").strip()
                 elif opcion == 2: # Descripcion
-                    listadoTareas[idTareaEditar].descripcion = input("Introduce la descripción de la tarea: \n")
+                    listadoTareas[idTareaEditar].descripcion = input("Introduce la descripción de la tarea: \n").strip()
                 elif opcion == 3: # Categoria
                     listadoTareas[idTareaEditar].categoria = editCategorias(listadoTareas[idTareaEditar].categoria)
                 elif opcion == 4: # Prioridad
                     try:
-                        prio = int(input("Introduce la nueva prioridad de la tarea: \n"))
+                        prio = int(input("Introduce la nueva prioridad de la tarea: \n").strip())
                         if prio in u.OPCIONES_PRIORIDAD:
                             listadoTareas[idTareaEditar].prioridad = prio
                         else:
@@ -152,9 +152,9 @@ def editarTarea(idTareaEditar:str, listadoTareas):
                     except ValueError:
                         print("Opcion no valida. ")
                 elif opcion == 5: # Completada
-                    completa = input("Introduce si se ha completado la tarea: \n\tSi --> Si la tarea se ha completado. \n\tNo --> Si la tarea no se ha completada\n")
+                    completa = input("Introduce si se ha completado la tarea: \n\tSi --> Si la tarea se ha completado. \n\tNo --> Si la tarea no se ha completada\n").strip()
                     while not u.completadaCorrecta(completa):
-                        completa = input("El valor introducido no es correcto, introduzca un valor correcto: \n")
+                        completa = input("El valor introducido no es correcto, introduzca un valor correcto: \n").strip()
                     listadoTareas[idTareaEditar].completa = True if completa.lower() == "si" else False
                 elif opcion == 0: # Salir
                     print("Saliendo de la edición de la tarea. ")

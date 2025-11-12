@@ -37,7 +37,7 @@ if __name__ == '__main__':
     opcion = -1
     while opcion != 0:
         try:
-            opcion = int(input(MSG))
+            opcion = int(input(MSG).strip())
             match opcion:
                 case 1: # Listamos las tareas
                     print(f"{u.listarTareas(listadoTareas=listadoTareas)}")
