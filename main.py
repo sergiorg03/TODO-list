@@ -24,7 +24,7 @@ ultimoID = -1
 
 if __name__ == '__main__':
 
-    listadoTareas = d.openJSON() if d.openJSON() else {}
+    listadoTareas = d.openJSON() or {}
     MSG = ("\nQue operacion desea hacer: \n"
            "\t1 --> Listado de todas las tareas. \n"
            "\t2 --> Agregar una nueva tarea. \n"

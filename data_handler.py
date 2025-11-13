@@ -25,11 +25,26 @@ def openJSON():
     """
     listado = None
     try:
-        if os.path.isfile(_fichero):
-            with open(_fichero, 'r', encoding="utf8") as file:
-                datos = json.load(file)
 
-            listado = {k: u.from_dict(data=v) for k, v in datos.items()}
+        if not os.path.exists(_fichero): # No existe el fichero, lo creamos
+            #print(f"El fichero {_fichero} no existe")
+            with open(_fichero, "w", encoding="utf8") as file:
+                json.dump({}, file, ensure_ascii=False, indent=4)
+            return {}
+
+        try:
+            with open(_fichero, "r", encoding="utf8") as file: # Abrimos el archivo e intentamos leerlo. Si no contiene nada devolvemos un diccionario vacio para comenzar a añadir tareas.
+                contenido = file.read().strip()
+                if not contenido: # Comprobamos que el archivo no este vacio
+                    #print("El archivo está vacio.")
+                    return {}
+
+                datos = json.loads(contenido)
+                listado = {k: u.from_dict(data=v) for k, v in datos.items()}
+
+        except json.JSONDecodeError:
+            print("El archivo JSON está corrupto. ")
+            listado = {}
     except FileNotFoundError:
         with open(_fichero, 'w', encoding="utf8") as file:
             json.dump({}, file, ensure_ascii=False, indent=4)
@@ -96,15 +111,18 @@ def eliminarTarea(listadoTareas, IDTareaEliminar:str):
     print("Tarea eliminada correctamente... \n")
 
 def editCategorias(categorias:dict):
+    print() # Separadores
     for clave, valorCategoria in list(categorias.items()):
         print(f"ID: {clave} --> {valorCategoria}")
+
+    print() # Separadores
 
     op = -2
     while op != -1:
         try:
             op = int(input('Introduzca el ID de la categoria a editar o -1 para salir: \n').strip())
 
-            if str(op) in categorias:
+            if u.idInLista(listaTareas=categorias, idTarea=op):
                 cat = input("Introduce el nuevo valor de la categoria: \n").strip()
                 categorias[op] = cat
                 print("Categoria editada correctamente. ")
