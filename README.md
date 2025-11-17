@@ -1,14 +1,14 @@
 # Proyecto ToDo List - Sergio Rodríguez Geniz 
 
 Aplicación de consola escrita en **Python** para gestionar tareas de manera sencilla y predecible.
-Las tareas introducidas se almacenan en un archivo **JSON**, lo que permite conservar información en ejectuciones diferentes. 
+Las tareas introducidas se almacenan en un archivo **JSON**, lo que permite conservar información en ejecuciones diferentes. 
 
 ## - Características principales
 - Añadir tareas.
 - Editar tareas.
 - Eliminar tareas. 
 - Listar las tareas creadas.
-- Buscar tareas por categoria o por prioridad.
+- Buscar tareas por categoría o por prioridad.
 
 ## - Estructura del proyecto
 ```
@@ -33,7 +33,7 @@ o en su defecto descarga el repositorio desde el botón `Code/Download Zip`.
 ## Funcionalidades del **JSON**
 El archivo **Tareas.json** se carga al iniciar la app.
 - Si existe: Se lee el archivo y se convierten las tareas a un diccionario para poder tratarlas.
-- Si no existe: Se crea el archivo vacio automáticamente. 
+- Si no existe: Se crea el archivo vacío automáticamente. 
 
 ## Funcionalidades clave
 ### Añadir tareas.
@@ -50,27 +50,27 @@ El programa permite al usuario mostrar todas las tareas creadas completadas y si
 
 ### Buscar tareas.
 El programa permite al usuario buscar tareas de dos formas diferentes:
-- Mediante la **Categoria**: Se le pedirá al usuario una categoria y se le mostraran todas las tareas que tengan dicha categoria. Si no existen tareas con dicha categoria se le mostrará un mensaje de error diciendo que no hay tareas con la categoria especificada.
+- Mediante la **Categoría**: Se le pedirá al usuario una categoría y se le mostraran todas las tareas que tengan dicha categoría. Si no existen tareas con dicha categoría se le mostrará un mensaje de error diciendo que no hay tareas con la categoría especificada.
 - Mediante la **Prioridad**: Se le solicitará al usuario una prioridad valida y seguidamente se le mostraran todas las tareas que tengan dicha prioridad. Si no existen tareas con dicha prioridad se le mostrará un mensaje de error diciendo que no hay tareas con la prioridad especificada.
 
 # Errores comunes.
 ### KeyError
-Este error se producia cuando el usuario intentaba realizar el borrado o la edición de una tarea creada anteriormente y saltaba una excepción sobre la clave introducida informando que esta no existia.  
+Este error se producía cuando el usuario intentaba realizar el borrado o la edición de una tarea creada anteriormente y saltaba una excepción sobre la clave introducida informando que esta no existía.  
 
 ***Solución:***  
 Este error saltaba cuando las claves introducidas eran de diferentes tipos (e.g: clave (str), valor introducido por el usuario (int)) y fue solucionado realizando el parseo de todos los datos introducidos al mismo tipo. E.g: str.
 
 ### Modificación del ultimo item del diccionario de tareas
-Este error se producia cuando al introducir una nueva tarea el método lastSetID() devolvia el mismo ID al crear la nueva tarea.  
+Este error se producía cuando al introducir una nueva tarea el método lastSetID() devolvía el mismo ID al crear la nueva tarea.  
 
 ***Solución:***  
 Este error fue solucionado leyendo el último ID de la lista, comprobando que este fuera un número y devolviendo el valor + 1. 
 
 ### JSONDecodeError
-Este error se producia cuando intentabamos leer el archivo de guardado de las tareas pero este no existia o se encontraba en estado vacio.  
+Este error se producía cuando intentábamos leer el archivo de guardado de las tareas pero este no existía o se encontraba en estado vacío.  
 
 ***Solución:***   
-Para solucionar este error realizamos una comprobación previa antes de leer el archivo. Si este no existia, estaba corrupto o estaba vacio, creabamos un nuevo archivo vacio y devolviamos un diccionario vacio para comenzar a crear tareas sin problemas.
+Para solucionar este error realizamos una comprobación previa antes de leer el archivo. Si este no existía, estaba corrupto o estaba vacío, creábamos un nuevo archivo vacío y devolvíamos un diccionario vacío para comenzar a crear tareas sin problemas.
 
 # Licencia.
 Este proyecto es de uso educativo y personal.
