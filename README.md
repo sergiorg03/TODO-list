@@ -54,7 +54,23 @@ El programa permite al usuario buscar tareas de dos formas diferentes:
 - Mediante la **Prioridad**: Se le solicitará al usuario una prioridad valida y seguidamente se le mostraran todas las tareas que tengan dicha prioridad. Si no existen tareas con dicha prioridad se le mostrará un mensaje de error diciendo que no hay tareas con la prioridad especificada.
 
 # Errores comunes.
+### KeyError
+Este error se producia cuando el usuario intentaba realizar el borrado o la edición de una tarea creada anteriormente y saltaba una excepción sobre la clave introducida informando que esta no existia.  
 
+***Solución:***  
+Este error saltaba cuando las claves introducidas eran de diferentes tipos (e.g: clave (str), valor introducido por el usuario (int)) y fue solucionado realizando el parseo de todos los datos introducidos al mismo tipo. E.g: str.
+
+### Modificación del ultimo item del diccionario de tareas
+Este error se producia cuando al introducir una nueva tarea el método lastSetID() devolvia el mismo ID al crear la nueva tarea.  
+
+***Solución:***  
+Este error fue solucionado leyendo el último ID de la lista, comprobando que este fuera un número y devolviendo el valor + 1. 
+
+### JSONDecodeError
+Este error se producia cuando intentabamos leer el archivo de guardado de las tareas pero este no existia o se encontraba en estado vacio.  
+
+***Solución:***   
+Para solucionar este error realizamos una comprobación previa antes de leer el archivo. Si este no existia, estaba corrupto o estaba vacio, creabamos un nuevo archivo vacio y devolviamos un diccionario vacio para comenzar a crear tareas sin problemas.
 
 # Licencia.
 Este proyecto es de uso educativo y personal.
