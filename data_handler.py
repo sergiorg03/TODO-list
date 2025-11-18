@@ -105,10 +105,11 @@ def eliminarTarea(listadoTareas, IDTareaEliminar:str):
         :param listadoTareas: Listado de tareas.
         :param IDTareaEliminar: ID de la tarea a eliminar.
     """
-    for clave, tareas in list(listadoTareas.items()):
-        if str(clave) == str(IDTareaEliminar):
-            listadoTareas.pop(clave)
-    print("Tarea eliminada correctamente... \n")
+    if IDTareaEliminar in listadoTareas:
+        listadoTareas.pop(IDTareaEliminar)
+        print("Tarea eliminada correctamente... \n")
+    else: 
+        print("No se pudo eliminar la tarea. ")
 
 def editCategorias(categorias:dict):
     print() # Separadores
