@@ -4,13 +4,6 @@ import utils as u
 # Clase Tarea para la creación, edicion y borrado de tareas.
 class Tarea:
 
-    # Atributos de la clase
-    nombreTarea= str
-    descripcion= str
-    categoria= {}
-    prioridad= int
-    completada= bool
-
     def __init__(self, nombreTarea, descripcion, categoria, prioridad=3, completada=False):
         self.nombreTarea = nombreTarea
         self.descripcion = descripcion
@@ -22,12 +15,6 @@ class Tarea:
     def __str__(self):
         categorias = u.getCategorias(self) if self.categoria else "No tiene subcategorias. "
         return f'Nombre: {self.nombreTarea} \n\tDescripcion: {self.descripcion} \n\tPrioridad: {self.prioridad} \n\tCompletada: {"Si" if self.completada else "No"} \n\tCategorias: {categorias} '
-
-    def setPrioridad(self, prioridad=-1):
-        if prioridad not in u.OPCIONES_PRIORIDAD:
-            self.prioridad = u.OPCIONES_PRIORIDAD[len(u.OPCIONES_PRIORIDAD)-1]
-        else:
-            self.prioridad = prioridad
 
     def to_dict(self):
         '''

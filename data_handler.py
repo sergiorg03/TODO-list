@@ -5,7 +5,7 @@ import Tarea as t
 import utils as u
 import re as r
 
-_fichero = 'Tareas.json'
+_fichero = 'tareas.json'
 
 def guardarJSON(listadoTareas=None):
     """
@@ -197,16 +197,22 @@ def buscarTarea(listadoTareas, categoria:str= "", prioridad:int= -1):
             Devuelve un diccionario con las tareas encontradas con la misma categoria o que contienen la palabra clave.
     """
     tareas = {}
-    if categoria: # Bucamos por categorias
-        for clave, valor in listadoTareas.items(): # Recorremos la lista
-            if valor.categoria: # Comprobamos que tenga valores el diccionario
-                for key, val in valor.categoria.items(): # Recorremos el diccionario
-                    if val.upper() == categoria.upper(): # Comprobamos que la categoria corresponda con el valor a buscar
-                        tareas[clave] = valor # Lo guardamos en un diccionario para devolverlo
-    else: # Buscamos por la prioridad
-        for clave, valor in list(listadoTareas.items()): # Recorremos la lista de tareas
-            if str(valor.prioridad) == str(prioridad): # Comprobamos que la prioridad sea la misma por la que buscamos
-                tareas[clave] = valor # Añadimos la tarea a la lista para devolver.
+    
+    if categoria: # Buscamos por categoria
+        categoria_upper = categoria.upper() 
+        # Creamos el diccionario de tareas
+        tareas = {
+            clave: tarea 
+            for clave, tarea in listadoTareas.items() 
+            if tarea.categoria and any(val.upper() == categoria_upper for val in tarea.categoria.values())
+        }
+    else: 
+        # No se introduce la categoria a buscar por lo que se realiza la busqueda por prioridades
+        tareas = {
+            clave: tarea 
+            for clave, tarea in listadoTareas.items() 
+            if tarea.prioridad == prioridad
+        }
     return tareas if tareas else {"Error": "No hay tareas."}
 
 

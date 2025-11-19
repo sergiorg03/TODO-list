@@ -8,17 +8,6 @@ import Tarea as t
         3 prioridad baja
 '''
 OPCIONES_PRIORIDAD = [1, 2, 3]
-_fichero = 'Tareas.json'
-
-class Utils:
-    _instancia= None
-
-    # Constructor de la clase
-    def __new__(cls, *args, **kwargs):
-        if cls._instancia is None:
-            cls._instancia = super().__new__(cls)
-        return cls._instancia
-
 
 def lastSetID(listadoTareas): 
     """

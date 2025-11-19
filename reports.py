@@ -7,6 +7,7 @@ import Tarea as t
 
 def generarReport(listadoTareas=None):
     """
+        DEPRECATED
         Función que genera un reporte sobre las tareas pendientes y las realizadas en orden de prioridad.
 
         :param:
